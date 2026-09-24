@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TEX-MEX | Календарь & Расписание</title>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar glass-panel">
+      <div class="logo">
+        <h1>TEX-MEX</h1>
+        <p>Календарь & Расписание</p>
+      </div>
+      <nav class="nav-menu">
+        <button class="nav-btn active" data-view="calendar">
+          <span class="icon">📅</span> Календарь
+        </button>
+        <button class="nav-btn" data-view="schedule">
+          <span class="icon">📚</span> Расписание
+        </button>
+        <button class="nav-btn" data-view="homework">
+          <span class="icon">📝</span> Домашние задания
+        </button>
+        <button class="nav-btn" data-view="statistics">
+          <span class="icon">📊</span> Статистика
+        </button>
+        <button class="nav-btn" data-view="ai-assistant">
+          <span class="icon">🤖</span> AI Ассистент
+        </button>
+      </nav>
+      
+      <!-- Theme Selector -->
+      <div style="margin-bottom: 20px;">
+        <label style="font-size: 0.9rem; color: var(--text-secondary); display: block; margin-bottom: 8px;">🎨 Тема:</label>
+        <select id="theme-selector" style="width: 100%; padding: 10px; background: var(--bg-card); border: 1px solid var(--glass-border); border-radius: 8px; color: var(--text-primary);">
+          <option value="default">🌙 Ночь</option>
+          <option value="purple">💜 Фиолет</option>
+          <option value="ocean">🌊 Океан</option>
+          <option value="forest">🌲 Лес</option>
+        </select>
+      </div>
+      
+      <!-- Cursor Color Selector -->
+      <div style="margin-bottom: 20px;">
+        <label style="font-size: 0.9rem; color: var(--text-secondary); display: block; margin-bottom: 8px;">✨ Цвет курсора:</label>
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;">
+          <button class="cursor-color-btn" data-color="#6366f1" style="background: #6366f1; border: 2px solid transparent; border-radius: 8px; padding: 12px; cursor: none; transition: all 0.3s ease;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'"></button>
+          <button class="cursor-color-btn" data-color="#ec4899" style="background: #ec4899; border: 2px solid transparent; border-radius: 8px; padding: 12px; cursor: none; transition: all 0.3s ease;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'"></button>
+          <button class="cursor-color-btn" data-color="#14b8a6" style="background: #14b8a6; border: 2px solid transparent; border-radius: 8px; padding: 12px; cursor: none; transition: all 0.3s ease;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'"></button>
+          <button class="cursor-color-btn" data-color="#f59e0b" style="background: #f59e0b; border: 2px solid transparent; border-radius: 8px; padding: 12px; cursor: none; transition: all 0.3s ease;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'"></button>
+          <button class="cursor-color-btn" data-color="#ef4444" style="background: #ef4444; border: 2px solid transparent; border-radius: 8px; padding: 12px; cursor: none; transition: all 0.3s ease;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'"></button>
+          <button class="cursor-color-btn" data-color="#22c55e" style="background: #22c55e; border: 2px solid transparent; border-radius: 8px; padding: 12px; cursor: none; transition: all 0.3s ease;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'"></button>
+          <button class="cursor-color-btn" data-color="#8b5cf6" style="background: #8b5cf6; border: 2px solid transparent; border-radius: 8px; padding: 12px; cursor: none; transition: all 0.3s ease;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'"></button>
+          <button class="cursor-color-btn" data-color="#06b6d4" style="background: #06b6d4; border: 2px solid transparent; border-radius: 8px; padding: 12px; cursor: none; transition: all 0.3s ease;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'"></button>
+        </div>
+      </div>
+      
+      <!-- Pomodoro Timer Widget -->
+      <div class="pomodoro-widget glass-panel">
+        <h3>⏰ Pomodoro Timer</h3>
+        <div id="pomodoro-display" class="pomodoro-time">25:00</div>
+        <div style="display: flex; gap: 10px; margin-top: 15px;">
+          <button id="pomodoro-start" class="btn-primary">▶ Начать</button>
+          <button id="pomodoro-reset" class="btn-secondary">↺ Сброс</button>
+        </div>
+        <select id="pomodoro-duration" style="margin-top: 10px; width: 100%; padding: 8px; background: var(--bg-card); border: 1px solid var(--glass-border); border-radius: 8px; color: var(--text-primary);">
+          <option value="25">25 минут</option>
+          <option value="30">30 минут</option>
+          <option value="45">45 минут</option>
+          <option value="60">60 минут</option>
+        </select>
+      </div>
+      
+      <!-- Spotify Widget -->
+      <div class="spotify-widget">
+        <h3>Сейчас слушаю</h3>
+        <div id="spotify-track-container">
+          <div class="spotify-no-track">Ничего не играет...</div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Calendar View -->
+      <section id="calendar-view" class="view active">
+        <header class="view-header glass-panel">
+          <h2>Календарь</h2>
+          <div class="month-nav">
+            <button id="prev-month">◀</button>
+            <span id="current-month"></span>
+            <button id="next-month">▶</button>
+          </div>
+        </header>
+        <div id="calendar-grid" class="calendar-grid"></div>
+      </section>
+
+      <!-- Day Notes Modal -->
+      <div id="day-modal" class="modal-overlay hidden">
+        <div class="modal glass-panel" style="max-width: 600px;">
+          <h3 id="day-modal-title">Заметки на дату</h3>
+          <div id="day-notes-list" style="margin-bottom: 20px;"></div>
+          <button class="btn-primary" onclick="showAddNoteForm()">+ Добавить заметку</button>
+          <button class="btn-secondary" onclick="closeDayModal()">Закрыть</button>
+        </div>
+      </div>
+
+      <!-- Schedule View -->
+      <section id="schedule-view" class="view">
+        <header class="view-header glass-panel">
+          <h2>Расписание пар</h2>
+          <div style="display: flex; gap: 10px;">
+            <button class="btn-secondary" id="scan-schedule-btn">📷 Сканировать фото</button>
+            <button class="btn-primary" id="add-lesson-btn">+ Добавить пару</button>
+          </div>
+        </header>
+        <div id="schedule-list" class="schedule-container"></div>
+      </section>
+
+      <!-- Statistics View -->
+      <section id="statistics-view" class="view">
+        <header class="view-header glass-panel">
+          <h2>📊 Статистика и прогресс</h2>
+        </header>
+        <div style="padding: 20px;">
+          <div class="stats-grid">
+            <div class="stat-card glass-panel">
+              <div class="stat-number" id="stat-total">0</div>
+              <div class="stat-label">Всего ДЗ</div>
+            </div>
+            <div class="stat-card glass-panel">
+              <div class="stat-number" id="stat-completed">0</div>
+              <div class="stat-label">Выполнено</div>
+            </div>
+            <div class="stat-card glass-panel">
+              <div class="stat-number" id="stat-pending">0</div>
+              <div class="stat-label">В процессе</div>
+            </div>
+            <div class="stat-card glass-panel">
+              <div class="stat-number" id="stat-rate">0%</div>
+              <div class="stat-label">Прогресс</div>
+            </div>
+          </div>
+          
+          <div class="progress-container glass-panel">
+            <h3 style="margin-bottom: 15px;">Прогресс выполнения ДЗ</h3>
+            <div class="progress-bar-bg">
+              <div id="progress-bar" class="progress-bar-fill"></div>
+            </div>
+          </div>
+          
+          <div class="stat-card glass-panel">
+            <div class="stat-number" id="stat-schedule">0</div>
+            <div class="stat-label">Пар в расписании</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Homework View -->
+      <section id="homework-view" class="view">
+        <header class="view-header glass-panel">
+          <h2>Домашние задания</h2>
+          <button class="btn-primary" id="add-homework-btn">+ Добавить ДЗ</button>
+        </header>
+        <div id="homework-list" class="homework-container"></div>
+      </section>
+
+      <!-- Notes View -->
+      <section id="notes-view" class="view">
+        <header class="view-header glass-panel">
+          <h2>Заметки</h2>
+          <button class="btn-primary" id="add-note-btn">+ Добавить заметку</button>
+        </header>
+        <div id="notes-list" class="notes-container"></div>
+      </section>
+
+      <!-- AI Assistant View -->
+      <section id="ai-assistant-view" class="view">
+        <header class="view-header glass-panel">
+          <h2>🤖 AI Ассистент</h2>
+          <button class="btn-secondary" id="clear-chat-btn">Очистить чат</button>
+        </header>
+        <div class="chat-container glass-panel">
+          <div id="chat-messages" class="chat-messages"></div>
+          <div class="chat-input-container">
+            <textarea id="chat-input" placeholder="Напишите сообщение..." rows="2"></textarea>
+            <button class="btn-secondary" id="attach-photo-btn" title="Прикрепить фото">📷</button>
+            <button class="btn-primary" id="send-message-btn">Отправить</button>
+          </div>
+          <input type="file" id="ai-photo-input" accept="image/*" style="display: none;">
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Modals -->
+  <div id="modal-overlay" class="modal-overlay hidden">
+    <div class="modal glass-panel" id="modal"></div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
